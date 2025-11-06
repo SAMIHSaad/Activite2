@@ -17,19 +17,19 @@ public class CustomerServiceApplication {
         SpringApplication.run(CustomerServiceApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner commandLineRunner(CustomerRepository customerRepository) {
-        return args -> {
-            customerRepository.save(Customer.builder()
-                    .name("Mohammed").email("med@gmail.com")
-                    .build());
-            customerRepository.save(Customer.builder()
-                    .name("Imane").email("imane@gmail.com")
-                    .build());
-            customerRepository.save(Customer.builder()
-                    .name("Yassine").email("yassine@gmail.com")
-                    .build());
-            customerRepository.findAll().forEach(System.out::println);
-        };
-    }
+    // @Bean
+    // CommandLineRunner commandLineRunner(CustomerRepository customerRepository) {
+    //     return args -> {
+    //         customerRepository.save(Customer.builder()
+    //                 .name("Mohammed").email("med@gmail.com")
+    //                 .build());
+    //         customerRepository.save(Customer.builder()
+    //                 .name("Imane").email("imane@gmail.com")
+    //                 .build());
+    //         customerRepository.save(Customer.builder()
+    //                 .name("Yassine").email("yassine@gmail.com")
+    //                 .build());
+    //         customerRepository.findAll().forEach(System.out::println);
+    //     };
+    // }
 }
