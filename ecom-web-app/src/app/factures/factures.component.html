@@ -1,0 +1,46 @@
+<div class="container">
+  <h2>Factures</h2>
+
+  <!-- Invoice List -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Customer ID</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let invoice of invoices">
+        <td>{{ invoice.id }}</td>
+        <td>{{ invoice.customerId }}</td>
+        <td>{{ invoice.amount }}</td>
+        <td>{{ invoice.date | date:'shortDate' }}</td>
+        <td>
+                                              <button class="btn btn-sm btn-primary" (click)="selectInvoice(invoice)"><i class="bi bi-pencil"></i> Edit</button>
+                                              <button class="btn btn-sm btn-danger" (click)="deleteInvoice(invoice.id)"><i class="bi bi-trash"></i> Delete</button>        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Create/Edit Invoice Form -->
+  <h3>{{ selectedInvoice ? 'Edit Invoice' : 'Create New Invoice' }}</h3>
+  <form (ngSubmit)="selectedInvoice ? updateInvoice() : createInvoice()">
+    <div class="mb-3">
+      <label for="customerId" class="form-label">Customer ID</label>
+      <input type="number" class="form-control" id="customerId" name="customerId" [(ngModel)]="invoiceForm.customerId" required>
+    </div>
+    <div class="mb-3">
+      <label for="amount" class="form-label">Amount</label>
+      <input type="number" class="form-control" id="amount" name="amount" [(ngModel)]="invoiceForm.amount" required>
+    </div>
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" class="form-control" id="date" name="date" [(ngModel)]="invoiceForm.date" required>
+    </div>
+    <button type="submit" class="btn btn-success"><i class="bi {{ selectedInvoice ? 'bi-arrow-clockwise' : 'bi-plus-circle' }}"></i> {{ selectedInvoice ? 'Update' : 'Create' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()"><i class="bi bi-x-circle"></i> Cancel</button>
+  </form>
+</div>

@@ -1,0 +1,42 @@
+<div class="container">
+  <h2>Customers</h2>
+
+  <!-- Customer List -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers">
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.email }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="selectCustomer(customer)">✏️ Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteCustomer(customer.id)">🗑️ Delete</button>
+          <button class="btn btn-sm btn-info" (click)="getOrders(customer)"><i class="bi bi-list-ul"></i> Orders</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Create/Edit Customer Form -->
+  <h3>{{ selectedCustomer ? 'Edit Customer' : 'Create New Customer' }}</h3>
+  <form (ngSubmit)="selectedCustomer ? updateCustomer() : createCustomer()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="customerForm.name" required>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="customerForm.email" required>
+    </div>
+    <button type="submit" class="btn btn-success"><i class="bi {{ selectedCustomer ? 'bi-arrow-clockwise' : 'bi-plus-circle' }}"></i> {{ selectedCustomer ? 'Update' : 'Create' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()"><i class="bi bi-x-circle"></i> Cancel</button>
+  </form>
+</div>

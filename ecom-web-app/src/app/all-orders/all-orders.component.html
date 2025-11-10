@@ -1,0 +1,81 @@
+<div class="container">
+  <h2>All Orders</h2>
+
+  <!-- Order List -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Customer ID</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.id }}</td>
+        <td>{{ order.createdAt | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.customerId }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="selectOrder(order)">✏️ Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteOrder(order.id)">🗑️ Delete</button>
+          <button class="btn btn-sm btn-info" (click)="getOrderDetails(order)"><i class="bi bi-info-circle"></i> Details</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Create/Edit Order Form -->
+  <h3>{{ selectedOrder ? 'Edit Order' : 'Create New Order' }}</h3>
+  <form (ngSubmit)="selectedOrder ? updateOrder() : createOrder()">
+    <div class="mb-3">
+      <label for="createdAt" class="form-label">Date</label>
+      <input type="date" class="form-control" id="createdAt" name="createdAt" [(ngModel)]="orderForm.createdAt" required>
+    </div>
+    <div class="mb-3">
+      <label for="status" class="form-label">Status</label>
+      <select class="form-control" id="status" name="status" [(ngModel)]="orderForm.status" required>
+        <option *ngFor="let status of orderStatuses" [value]="status">{{ status }}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="customerId" class="form-label">Customer</label>
+      <select class="form-control" id="customerId" name="customerId" [(ngModel)]="orderForm.customerId" required>
+        <option *ngFor="let customer of customers" [value]="customer.id">{{ customer.name }}</option>
+      </select>
+    </div>
+
+    <h4>Order Items</h4>
+    <div class="mb-3">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="productId" class="form-label">Product</label>
+          <select class="form-control" id="productId" name="productId" [(ngModel)]="newOrderItem.productId">
+            <option [value]="null" disabled>Select a product</option>
+            <option *ngFor="let product of products" [value]="product.id">{{ product.name }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="quantity" class="form-label">Quantity</label>
+          <input type="number" class="form-control" id="quantity" name="quantity" [(ngModel)]="newOrderItem.quantity" min="1">
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button type="button" class="btn btn-info" (click)="addOrderItem()"><i class="bi bi-plus"></i> Add Item</button>
+        </div>
+      </div>
+    </div>
+
+    <ul class="list-group mb-3">
+      <li class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let item of orderForm.orderItems; let i = index">
+        {{ item.productName }} ({{ item.quantity }})
+        <button type="button" class="btn btn-danger btn-sm" (click)="removeOrderItem(i)"><i class="bi bi-dash-circle"></i> Remove</button>
+      </li>
+    </ul>
+
+    <button type="submit" class="btn btn-success"><i class="bi {{ selectedOrder ? 'bi-arrow-clockwise' : 'bi-plus-circle' }}"></i> {{ selectedOrder ? 'Update' : 'Create' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()"><i class="bi bi-x-circle"></i> Cancel</button>
+  </form>
+</div>

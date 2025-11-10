@@ -6,9 +6,12 @@
 
     <groupId>org.projetbakend</groupId>
     <artifactId>Activite2</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
     <modules>
         <module>billing-service</module>
+        <module>chat-service-RAG</module>
         <module>config-service</module>
         <module>customer-service</module>
         <module>discovery-service</module>
@@ -16,7 +19,6 @@
         <module>inventory-service</module>
         <module>order-service</module>
     </modules>
-    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

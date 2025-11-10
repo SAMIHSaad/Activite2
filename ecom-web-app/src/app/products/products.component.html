@@ -1,0 +1,46 @@
+<div class="container">
+  <h2>Products</h2>
+
+  <!-- Product List -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.quantity }}</td>
+        <td>
+                                              <button class="btn btn-sm btn-primary" (click)="selectProduct(product)"><i class="bi bi-pencil"></i> Edit</button>
+                                              <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id)"><i class="bi bi-trash"></i> Delete</button>        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Create/Edit Product Form -->
+  <h3>{{ selectedProduct ? 'Edit Product' : 'Create New Product' }}</h3>
+  <form (ngSubmit)="selectedProduct ? updateProduct() : createProduct()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" name="name" [(ngModel)]="productForm.name" required>
+    </div>
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input type="number" class="form-control" id="price" name="price" [(ngModel)]="productForm.price" required>
+    </div>
+    <div class="mb-3">
+      <label for="quantity" class="form-label">Quantity</label>
+      <input type="number" class="form-control" id="quantity" name="quantity" [(ngModel)]="productForm.quantity" required>
+    </div>
+    <button type="submit" class="btn btn-success"><i class="bi {{ selectedProduct ? 'bi-arrow-clockwise' : 'bi-plus-circle' }}"></i> {{ selectedProduct ? 'Update' : 'Create' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="resetForm()"><i class="bi bi-x-circle"></i> Cancel</button>
+  </form>
+</div>

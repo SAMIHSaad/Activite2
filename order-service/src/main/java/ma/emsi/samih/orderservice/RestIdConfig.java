@@ -1,18 +1,16 @@
-package org.projetbakend.customerservice.config;
+package ma.emsi.samih.orderservice;
 
-import org.projetbakend.customerservice.entities.Customer;
+import ma.emsi.samih.orderservice.entities.Order;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 @Configuration
-public class RestRepositoriyConfig implements RepositoryRestConfigurer {
+public class RestIdConfig implements RepositoryRestConfigurer {
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        if (config != null) {
-            config.exposeIdsFor(Customer.class);
-        }
+        config.exposeIdsFor(Order.class);
     }
 }
