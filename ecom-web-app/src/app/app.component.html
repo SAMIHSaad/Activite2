@@ -19,3 +19,9 @@
 </nav>
 
 <router-outlet></router-outlet>
+
+<button class="chatbot-toggler" (click)="showChatbot = !showChatbot">
+  <span class="material-icons">smart_toy</span>
+</button>
+
+<app-chatbot *ngIf="showChatbot"></app-chatbot>

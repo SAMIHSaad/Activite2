@@ -29,11 +29,16 @@ public class ChatService {
         this.vectorStore = vectorStore;
     }
 
-    public String ragChat(String question) {
-        // 1. Retrieve similar documents from vector store
-        List<Document> similarDocs = vectorStore.similaritySearch(
-                SearchRequest.builder().query(question).topK(4).build()
-        );
+    public String ragChat(String question, List<Document> uploadedDocs) {
+        List<Document> similarDocs;
+        if (uploadedDocs != null && !uploadedDocs.isEmpty()) {
+            similarDocs = uploadedDocs;
+        } else {
+            // 1. Retrieve similar documents from vector store
+            similarDocs = vectorStore.similaritySearch(
+                    SearchRequest.builder().query(question).topK(4).build()
+            );
+        }
 
         // 2. Extract and combine document content as context
         String context = similarDocs.stream()
@@ -60,7 +65,48 @@ public class ChatService {
         return chatClient.prompt(prompt).call().content();
     }
 
-    public void textifyAndStore(MultipartFile file) throws IOException {
+    public String ragChat(String question) {
+        // 1. Retrieve similar documents from vector store
+        List<Document> similarDocs = vectorStore.similaritySearch(
+                SearchRequest.builder().query(question).topK(4).build()
+        );
+
+        if (similarDocs.isEmpty()) {
+            return "I don't have information about that.";
+        }
+
+        // 2. Extract and combine document content as context
+        String context = similarDocs.stream()
+                .map(Document::getText)
+                .collect(Collectors.joining(System.lineSeparator()));
+
+        // 3. Create prompt template with context
+        String promptTemplate = """
+                You are a helpful assistant.
+                Answer the following question based only on the provided context.
+                If the answer is not in the context, say "I don't have information about that".
+                
+                Context:
+                {context}
+                
+                Question:
+                {question}
+                """;
+
+        PromptTemplate template = new PromptTemplate(promptTemplate);
+        Prompt prompt = template.create(Map.of("context", context, "question", question));
+
+        // 4. Generate response using ChatClient
+        return chatClient.prompt(prompt).call().content();
+    }
+
+    public String directChat(String question) {
+        PromptTemplate template = new PromptTemplate(question);
+        Prompt prompt = template.create();
+        return chatClient.prompt(prompt).call().content();
+    }
+
+    public List<Document> textifyAndStore(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             throw new IOException("Failed to store empty file.");
         }
@@ -78,5 +124,6 @@ public class ChatService {
 
         // 4. Store documents in VectorStore (automatically converts to embeddings)
         vectorStore.add(chunks);
+        return chunks;
     }
 }
