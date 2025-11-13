@@ -1,0 +1,26 @@
+<div class="chatbot-window">
+  <div class="chatbot-header">
+    <h5>Chatbot</h5>
+  </div>
+  <div class="chatbot-messages">
+    <div *ngFor="let message of messages" class="message" [ngClass]="{'user': message.isUser, 'bot': !message.isUser}">
+      {{ message.text }}
+    </div>
+  </div>
+  <div class="chatbot-input">
+    <input type="text" placeholder="Type a message..." [(ngModel)]="newMessage" (keyup.enter)="sendMessage()">
+    <input type="file" #fileInput id="fileInput" style="display: none;" (change)="onFileSelected($event)">
+    <button (click)="fileInput.click()">
+      <span class="material-icons">attach_file</span>
+    </button>
+    <ng-container *ngIf="selectedFile">
+      <span class="selected-file-name">{{ selectedFile.name }}</span>
+      <button (click)="clearFileSelection()" class="clear-file-button">
+        <span class="material-icons">close</span>
+      </button>
+    </ng-container>
+    <button (click)="sendMessage()">
+      <span class="material-icons">send</span>
+    </button>
+  </div>
+</div>
