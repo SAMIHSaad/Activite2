@@ -36,7 +36,7 @@ export class ChatbotComponent {
         }
         formData.append('question', questionToSend);
         formData.append('file', this.selectedFile);
-        this.http.post(`${this.chatServiceUrl}/chat/ask`, formData, { responseType: 'text', headers: { 'Content-Type': undefined } })
+        this.http.post(`${this.chatServiceUrl}/chat/ask`, formData, { responseType: 'text' })
           .subscribe(response => {
             this.messages.push({ text: response, isUser: false });
             this.clearFileSelection(); // Clear file after successful upload
